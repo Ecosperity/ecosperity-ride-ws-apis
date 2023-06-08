@@ -10,6 +10,7 @@ void main(List<String> arguments) async {
 
   Handler _wsHandler = webSocketHandler((webSocket) {
     webSocket.stream.listen((message) {
+      print(message);
       webSocket.sink.add("echo $message");
     });
   });
