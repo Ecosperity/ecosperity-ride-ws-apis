@@ -56,9 +56,9 @@ class Room {
     // add client to room
     _clients[client.id] = client;
     // sends previous messages to client
-    if (_messages.isNotEmpty) {
-      _messages.forEach((m) => client.sendMessage(m));
-    }
+    // if (_messages.isNotEmpty) {
+    //   _messages.forEach((m) => client.sendMessage(m));
+    // }
 
     // redirects client messages to users
     client.setUpStream(
