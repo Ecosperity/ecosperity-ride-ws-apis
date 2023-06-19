@@ -65,13 +65,14 @@ class Room {
 
     // check if client already exist
     if (_clients.containsKey(client.id)) {
+      for (int i = 0; i < _clients.length; i++) {
+        print(_clients[i]!.name);
+      }
       return;
     }
     // add client to room
     _clients[client.id] = client;
-    for (int i = 0; i < _clients.length; i++) {
-      print(_clients[i]);
-    }
+
     // sends previous messages to client
     // if (_messages.isNotEmpty) {
     //   _messages.forEach((m) => client.sendMessage(m));
