@@ -10,9 +10,13 @@ class Room {
   StreamSubscription? _streamSub;
 
   String get id => _id;
+
   int get totalClients => _clients.length;
+
   List<Client> get clients => _clients.values.toList();
+
   List<Message> get messages => _messages;
+
   set onClientRemoved(void Function(Client) callback) {
     _onClientRemoved = callback;
   }
@@ -27,6 +31,13 @@ class Room {
     this._messages,
     this._onClientRemoved,
   );
+
+  Future<Db> database() async {
+    final db = await Db.create(
+        'mongodb+srv://doadmin:wu3C5Y70p49Rey21@eml-database-6c1feb38.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=eml-database');
+    await db.open();
+    return db;
+  }
 
   /// Creates a [Room] with a id and list of clients
   factory Room.create(String id,
@@ -49,6 +60,9 @@ class Room {
   }
 
   Future<void> addClient(Client client) async {
+    Db databases = await database();
+    final col = databases.collection('room');
+
     // check if client already exist
     if (_clients.containsKey(client.id)) {
       return;
@@ -62,9 +76,11 @@ class Room {
 
     // redirects client messages to users
     client.setUpStream(
-      onEvent: (message) {
+      onEvent: (message) async {
         sendBrodCastMessage(message);
         _messages.add(message);
+        Map<String, dynamic> jsonMsg = message.toMap();
+        await col.insert(jsonMsg);
       },
       onClosed: (client) {
         removeClient(client.id);

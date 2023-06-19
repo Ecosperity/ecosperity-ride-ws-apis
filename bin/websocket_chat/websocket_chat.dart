@@ -3,6 +3,7 @@ library websocketchat;
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:mongo_dart/mongo_dart.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_web_socket/shelf_web_socket.dart';
 import 'package:uuid/uuid.dart';
